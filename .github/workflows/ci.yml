@@ -23,7 +23,8 @@ jobs:
         java-version: '17'
 
     - name: Compile Java program
-      run: cd assignment1-csvpreview-digalaritvik && javac task1/CSVReaderPreviewer.java
+        run: |
+          javac -d . src/task1/CSVReaderPreviewer.java
 
     - name: Run the program and capture output
       run: |
