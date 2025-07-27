@@ -4,12 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class CSVReaderPreviewer {
+public class CSVReaderPreview {
 
     public static void main(String[] args) {
+        // Path to the CSV file
         String csvFilePath = "dataset/dataset.csv";
         String row;
-        String delimit = ",";
+        String delimiter = ",";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
 
@@ -21,7 +22,8 @@ public class CSVReaderPreviewer {
 
             System.out.println("=== Data Preview ===\n");
 
-            String[] columnHeaders = headerRow.split(delimit);
+            // Display column headers
+            String[] columnHeaders = headerRow.split(delimiter);
             System.out.println("Columns:");
             for (String header : columnHeaders) {
                 System.out.print(header + " ");
@@ -31,12 +33,14 @@ public class CSVReaderPreviewer {
 
             int recordCount = 0;
 
+            // Read and display the first 5 data rows
             while ((row = reader.readLine()) != null && recordCount < 5) {
-                String[] recordFields = row.split(delimit);
+                String[] recordFields = row.split(delimiter);
                 System.out.println(String.join(" ", recordFields));
                 recordCount++;
             }
 
+            // Count the remaining records
             while (reader.readLine() != null) {
                 recordCount++;
             }
