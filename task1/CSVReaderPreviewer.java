@@ -7,46 +7,45 @@ import java.io.IOException;
 public class CSVReaderPreviewer {
 
     public static void main(String[] args) {
-        String csvPath = "data/dataset.csv";
-        String lineText;
-        int totalRows = 0;
-        int totalColumns = 0;
+        String csvFilePath = "dataset/dataset.csv";
+        String row;
+        String delimit = ",";
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(csvPath))) {
-            if ((lineText = bufferedReader.readLine()) != null) {
-                String[] headerFields = lineText.split(",");
-                totalColumns = headerFields.length;
-                System.out.println("=== Data Preview ===");
-                System.out.println("Columns:");
-                for (String columnName : headerFields) {
-                    System.out.print(columnName + "\t");
-                }
+        try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
 
-                System.out.println("\nTotal Columns: " + totalColumns);
-                System.out.println("\nFirst 10 Records:");
-
-                int previewLimit = 10;
-
-                while ((lineText = bufferedReader.readLine()) != null && previewLimit > 0) {
-                    String[] rowFields = lineText.split(",");
-                    for (String field : rowFields) {
-                        System.out.print(field + "\t");
-                    }
-                    System.out.println();
-                    totalRows++;
-                    previewLimit--;
-                }
-
-                while ((lineText = bufferedReader.readLine()) != null) {
-                    totalRows++;
-                }
-
-                System.out.println("\nTotal Records (excluding header): " + totalRows);
+            String headerRow = reader.readLine();
+            if (headerRow == null) {
+                System.out.println("The CSV file is empty.");
+                return;
             }
 
-        } catch (IOException ioEx) {
-            System.err.println("Error reading the file:");
-            ioEx.printStackTrace();
+            System.out.println("=== Data Preview ===\n");
+
+            String[] columnHeaders = headerRow.split(delimit);
+            System.out.println("Columns:");
+            for (String header : columnHeaders) {
+                System.out.print(header + " ");
+            }
+            System.out.println("\nTotal columns: " + columnHeaders.length);
+            System.out.println("\nFirst 5 Records:\n");
+
+            int recordCount = 0;
+
+            while ((row = reader.readLine()) != null && recordCount < 5) {
+                String[] recordFields = row.split(delimit);
+                System.out.println(String.join(" ", recordFields));
+                recordCount++;
+            }
+
+            while (reader.readLine() != null) {
+                recordCount++;
+            }
+
+            System.out.println("\nTotal Records (excluding header): " + recordCount);
+
+        } catch (IOException exception) {
+            System.err.println("An error occurred while reading the file:");
+            exception.printStackTrace();
         }
     }
 }
