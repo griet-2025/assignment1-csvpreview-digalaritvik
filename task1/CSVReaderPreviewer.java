@@ -7,7 +7,7 @@ import java.io.IOException;
 public class CSVReaderPreviewer {
 
     public static void main(String[] args) {
-        String csvPath = "C:\\Users\\Ritwik\\Downloads\\dataset.csv";
+        String csvPath = "data/dataset.csv";
         String lineText;
         int totalRows = 0;
         int totalColumns = 0;
