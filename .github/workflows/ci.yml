@@ -23,26 +23,28 @@ jobs:
         java-version: '17'
 
     - name: Compile Java program
-      run: javac task1/CSVReaderPreview.java
+      run: cd assignment1-csvpreview-digalaritvik && javac task1/CSVReaderPreviewer.java
 
     - name: Run the program and capture output
       run: |
+        cd assignment1-csvpreview-digalaritvik
         mkdir -p output
-        java task1.CSVReaderPreview > output/result.txt
+        java task1.CSVReaderPreviewer > output/result.txt
 
     - name: Initialize grading variables
       id: grading
       run: |
+        cd assignment1-csvpreview-digalaritvik
         points_available=5
         points_awarded=0
 
         # Test 1: Check header
-        if grep -q "=== Data Preview ===" output/result.txt; then
+        if grep -q "=== File Content Preview ===" output/result.txt; then
           points_awarded=$((points_awarded+1))
         fi
 
         # Test 2: Check column count
-        if grep -q "Total Columns: 3" output/result.txt; then
+        if grep -q "Number of Columns:" output/result.txt; then
           points_awarded=$((points_awarded+1))
         fi
 
@@ -56,13 +58,15 @@ jobs:
 
     - name: Display grading result
       run: |
+        cd assignment1-csvpreview-digalaritvik
         echo "Points Awarded: $points_awarded / $points_available"
 
     - name: Add summary for GitHub Actions UI
       run: |
+        cd assignment1-csvpreview-digalaritvik
         echo "### Grading Result" >> $GITHUB_STEP_SUMMARY
         echo "**Points Awarded:** $points_awarded / $points_available" >> $GITHUB_STEP_SUMMARY
 
     - name: Display result file (for debug)
       if: always()
-      run: cat output/result.txt
+      run: cd assignment1-csvpreview-digalaritvik && cat output/result.txt

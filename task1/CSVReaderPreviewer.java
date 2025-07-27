@@ -7,46 +7,45 @@ import java.io.IOException;
 public class CSVReaderPreviewer {
 
     public static void main(String[] args) {
-        String fileLocation = "dataset/dataset.csv";
-        String currentLine;
+        String filePath = "dataset/dataset.csv";
+        String lineContent;
         String separator = ",";
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileLocation))) {
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(filePath))) {
 
-            String headerLine = bufferedReader.readLine();
+            String headerLine = fileReader.readLine();
             if (headerLine == null) {
-                System.out.println("CSV file is empty. Please check the file.");
+                System.out.println("The CSV file is empty.");
                 return;
             }
 
-            System.out.println("=== File Content Preview ===\n");
+            System.out.println("=== Data Preview ===\n");
 
             String[] headers = headerLine.split(separator);
-            System.out.println("Header Columns:");
-            for (String column : headers) {
-                System.out.print(column + " ");
+            System.out.println("Columns:");
+            for (String col : headers) {
+                System.out.print(col + " ");
             }
-            System.out.println("\nNumber of Columns: " + headers.length);
-            System.out.println("\nTop 5 Rows:\n");
+            System.out.println("\nTotal columns: " + headers.length);
+            System.out.println("\nFirst 5 Records:\n");
 
-            int linesShown = 0;
+            int dataLineCount = 0;
 
-            while ((currentLine = bufferedReader.readLine()) != null && linesShown < 5) {
-                String[] values = currentLine.split(separator);
+            while ((lineContent = fileReader.readLine()) != null && dataLineCount < 5) {
+                String[] values = lineContent.split(separator);
                 System.out.println(String.join(" ", values));
-                linesShown++;
+                dataLineCount++;
             }
 
-            int totalEntries = linesShown;
-            while (bufferedReader.readLine() != null) {
-                totalEntries++;
+            while (fileReader.readLine() != null) {
+                dataLineCount++;
             }
 
-            System.out.println("\nTotal Data Rows (excluding header): " + totalEntries);
+            System.out.println("\nTotal Records (excluding header): " + dataLineCount);
 
-        } catch (IOException e) {
-            System.err.println("Unable to process the file due to an I/O error:");
-            e.printStackTrace();
+        } catch (IOException ioException) {
+            System.err.println("An error occurred while reading the file:");
+            ioException.printStackTrace();
         }
     }
 }
